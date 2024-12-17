@@ -4,12 +4,11 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-
-import lombok.Data;
 
 /**
  * LC 预测表
@@ -24,7 +23,7 @@ public class LcPredict implements Serializable {
     private Long id;
 
     /**
-     * 竞赛编号: 周赛 * 2 + 1, 双周赛 * 2
+     * 竞赛编号: 周赛场次 * 2 + 1, 双周赛场次 * 2
      */
     private Integer contestId;
 
@@ -42,6 +41,11 @@ public class LcPredict implements Serializable {
      * 排名
      */
     private Integer rank;
+
+    /**
+     * 参赛次数
+     */
+    private Integer attendedCount;
 
     /**
      * 当前评分
