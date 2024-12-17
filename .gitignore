@@ -4,6 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+### LC PREDICTOR ###
+tmp/
+
 ### STS ###
 .apt_generated
 .classpath
