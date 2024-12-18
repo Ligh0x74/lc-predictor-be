@@ -1,20 +1,15 @@
 package com.example.lcpredictor.utils.crawler;
 
 import com.example.lcpredictor.domain.LcPredict;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class Predictor {
 
-    private static final Logger logger = LoggerFactory.getLogger(Predictor.class);
-
     // 预测算法
     // https://leetcode.cn/circle/discuss/neTUV4/
     // https://leetcode.cn/circle/discuss/TbWS5j/
     public static void predict(List<LcPredict> predictList) {
-        long start = System.currentTimeMillis();
         int n = predictList.size();
         for (int i = 0; i < n; i++) {
             LcPredict user = predictList.get(i);
@@ -26,8 +21,6 @@ public class Predictor {
             double newRating = oldRating + delta;
             user.setNewRating(newRating);
         }
-        long end = System.currentTimeMillis();
-        logger.info("PREDICT ELAPSED Time: " + (end - start) / 1000.0);
     }
 
     private static double erk(List<LcPredict> predictList, int i, double ri) {

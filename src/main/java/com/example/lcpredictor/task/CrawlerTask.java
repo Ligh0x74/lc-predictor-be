@@ -34,6 +34,9 @@ public class CrawlerTask {
     @Autowired
     private LcPredictService lcPredictService;
 
+    @Autowired
+    PredictTask predictTask;
+
     /**
      * 定时任务, 抓取竞赛数据, 将数据存储到数据库中
      *
@@ -64,6 +67,7 @@ public class CrawlerTask {
                 break;
             }
         }
+        predictTask.execute(contestName);
     }
 
     /**
