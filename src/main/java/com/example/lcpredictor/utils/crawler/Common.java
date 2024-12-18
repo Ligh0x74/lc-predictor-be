@@ -20,4 +20,14 @@ public class Common {
         int x = Integer.parseInt(contestName.substring(contestName.lastIndexOf('-') + 1));
         return x * 2 + (contestName.charAt(0) == 'b' ? 0 : 1);
     }
+
+    /**
+     * 将竞赛编号转换为竞赛名称
+     *
+     * @param contestId 竞赛编号
+     * @return 竞赛名称
+     */
+    public static String parseContestId(Integer contestId) {
+        return (contestId % 2 == 1 ? "weekly-contest-" : "biweekly-contest-") + (contestId / 2);
+    }
 }
