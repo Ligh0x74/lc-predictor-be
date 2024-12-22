@@ -19,7 +19,7 @@ public class LcContestServiceImpl extends ServiceImpl<LcContestMapper, LcContest
         implements LcContestService {
 
     @Override
-    public Result<PageVo<LcContestDTO>> getContestPage(Integer pageIndex, Integer pageSize) {
+    public Result<PageVo<LcContestDTO>> get(Integer pageIndex, Integer pageSize) {
         Page<LcContest> page = new Page<>(pageIndex, pageSize);
         page.setRecords(lambdaQuery()
                 .orderByDesc(LcContest::getStartTime)

@@ -148,18 +148,22 @@ public class CrawlerTask {
                         .eq(LcPredict::getDataRegion, dataRegion)
                         .eq(LcPredict::getUsername, username)
                         .one();
-                predict.setAttendedCount(pre.getAttendedCount() + 1);
-                predict.setOldRating(pre.getNewRating());
-            } else {
-                jsonObject = JSONUtil.parseObj(Requests.request(dataRegion, username))
-                        .getByPath("data.userContestRanking", JSONObject.class);
-                if (jsonObject == null) {
-                    predict.setAttendedCount(0);
-                    predict.setOldRating(1500.0);
-                } else {
-                    predict.setAttendedCount(jsonObject.getInt("attendedContestsCount"));
-                    predict.setOldRating(jsonObject.getDouble("rating"));
+                // 如果该用户有参加该双周赛, 则从数据库中获取数据做处理, 否则依然发送请求获取数据
+                if (pre != null) {
+                    predict.setAttendedCount(pre.getAttendedCount() + 1);
+                    predict.setOldRating(pre.getNewRating());
+                    lcPredictService.save(predict);
+                    continue;
                 }
+            }
+            jsonObject = JSONUtil.parseObj(Requests.request(dataRegion, username))
+                    .getByPath("data.userContestRanking", JSONObject.class);
+            if (jsonObject == null) {
+                predict.setAttendedCount(0);
+                predict.setOldRating(1500.0);
+            } else {
+                predict.setAttendedCount(jsonObject.getInt("attendedContestsCount"));
+                predict.setOldRating(jsonObject.getDouble("rating"));
             }
             lcPredictService.save(predict);
         }

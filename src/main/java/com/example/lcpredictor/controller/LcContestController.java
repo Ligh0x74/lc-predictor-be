@@ -18,8 +18,8 @@ public class LcContestController {
     private LcContestService lcContestService;
 
     @GetMapping("/{pageIndex}/{pageSize}")
-    public Result<PageVo<LcContestDTO>> getContestPage(@PathVariable("pageIndex") Integer pageIndex,
-                                                       @PathVariable("pageSize") Integer pageSize) {
-        return lcContestService.getContestPage(pageIndex, pageSize);
+    public Result<PageVo<LcContestDTO>> get(@PathVariable("pageIndex") Integer pageIndex,
+                                            @PathVariable("pageSize") Integer pageSize) {
+        return lcContestService.get(pageIndex, pageSize);
     }
 }

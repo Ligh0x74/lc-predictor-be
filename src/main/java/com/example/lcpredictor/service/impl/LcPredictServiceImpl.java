@@ -25,7 +25,7 @@ public class LcPredictServiceImpl extends ServiceImpl<LcPredictMapper, LcPredict
     LcUserService lcUserService;
 
     @Override
-    public Result<PageVo<LcPredictDTO>> getPredictPage(String contestName, Integer pageIndex, Integer pageSize) {
+    public Result<PageVo<LcPredictDTO>> get(String contestName, Integer pageIndex, Integer pageSize) {
         Integer contestId = Common.parseContestName(contestName);
         Page<LcPredict> page = new Page<>(pageIndex, pageSize);
         page.setRecords(lambdaQuery()

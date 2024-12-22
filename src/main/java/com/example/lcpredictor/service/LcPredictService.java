@@ -16,5 +16,5 @@ public interface LcPredictService extends IService<LcPredict> {
      * @param pageSize    页面大小
      * @return 页面对象
      */
-    Result<PageVo<LcPredictDTO>> getPredictPage(String contestName, Integer pageIndex, Integer pageSize);
+    Result<PageVo<LcPredictDTO>> get(String contestName, Integer pageIndex, Integer pageSize);
 }

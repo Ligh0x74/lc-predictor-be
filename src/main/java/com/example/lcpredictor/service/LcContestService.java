@@ -15,5 +15,5 @@ public interface LcContestService extends IService<LcContest> {
      * @param pageSize  页面大小
      * @return 页面对象
      */
-    Result<PageVo<LcContestDTO>> getContestPage(Integer pageIndex, Integer pageSize);
+    Result<PageVo<LcContestDTO>> get(Integer pageIndex, Integer pageSize);
 }

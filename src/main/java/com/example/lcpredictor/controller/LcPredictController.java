@@ -18,9 +18,9 @@ public class LcPredictController {
     private LcPredictService lcPredictService;
 
     @GetMapping("/{contestName}/{pageIndex}/{pageSize}")
-    public Result<PageVo<LcPredictDTO>> getPredictPage(@PathVariable("contestName") String contestName,
-                                                       @PathVariable("pageIndex") Integer pageIndex,
-                                                       @PathVariable("pageSize") Integer pageSize) {
-        return lcPredictService.getPredictPage(contestName, pageIndex, pageSize);
+    public Result<PageVo<LcPredictDTO>> get(@PathVariable("contestName") String contestName,
+                                            @PathVariable("pageIndex") Integer pageIndex,
+                                            @PathVariable("pageSize") Integer pageSize) {
+        return lcPredictService.get(contestName, pageIndex, pageSize);
     }
 }
