@@ -45,4 +45,23 @@ public class LcPredictServiceImpl extends ServiceImpl<LcPredictMapper, LcPredict
         pageVo.setRecords(res);
         return Result.success(pageVo);
     }
+
+    @Override
+    public Result<LcPredictDTO> get(String contestName, String dataRegion, String username) {
+        Integer contestId = Common.parseContestName(contestName);
+        LcPredict predict = lambdaQuery().eq(LcPredict::getContestId, contestId)
+                .eq(LcPredict::getDataRegion, dataRegion)
+                .eq(LcPredict::getUsername, username)
+                .one();
+        LcPredictDTO predictDTO = BeanUtil.copyProperties(predict, LcPredictDTO.class);
+        if (predictDTO != null) {
+            LcUser user = lcUserService.lambdaQuery()
+                    .eq(LcUser::getDataRegion, predictDTO.getDataRegion())
+                    .eq(LcUser::getUsername, predictDTO.getUsername())
+                    .one();
+            predictDTO.setNickname(user.getNickname());
+            predictDTO.setAvatar(user.getAvatar());
+        }
+        return Result.success(predictDTO);
+    }
 }

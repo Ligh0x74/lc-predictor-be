@@ -17,4 +17,22 @@ public interface LcPredictService extends IService<LcPredict> {
      * @return 页面对象
      */
     Result<PageVo<LcPredictDTO>> get(String contestName, Integer pageIndex, Integer pageSize);
+
+    /**
+     * 获取指定用户名的预测列表
+     *
+     * @param contestName
+     * @param username
+     * @return 指定用户名的预测列表
+     */
+
+    /**
+     * 获取指定的预测对象
+     *
+     * @param contestName 竞赛名称
+     * @param dataRegion  数据区域
+     * @param username    用户名
+     * @return 预测对象
+     */
+    Result<LcPredictDTO> get(String contestName, String dataRegion, String username);
 }
