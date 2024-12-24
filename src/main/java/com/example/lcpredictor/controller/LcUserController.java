@@ -14,8 +14,8 @@ public class LcUserController {
     LcUserService lcUserService;
 
     @PostMapping("/login/{dataRegion}/{username}")
-    public Result<LcUserDTO> login(@RequestParam("dataRegion") String dataRegion,
-                                   @RequestParam("username") String username) throws InterruptedException {
+    public Result<LcUserDTO> login(@PathVariable("dataRegion") String dataRegion,
+                                   @PathVariable("username") String username) throws InterruptedException {
         return lcUserService.login(dataRegion, username);
     }
 }
