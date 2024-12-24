@@ -158,7 +158,7 @@ public class Requests {
      *
      * @param dataRegion 数据区域: CN/US
      * @param username   用户名
-     * @return 请求成功, 则为竞赛页面的 JSON 数据, 否则为 null
+     * @return 请求成功, 则为用户的 JSON 数据, 否则为 null
      * @throws InterruptedException 见 {@link Thread#sleep(long)}
      */
     public static String request(String dataRegion, String username) throws InterruptedException {

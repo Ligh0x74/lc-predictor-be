@@ -26,12 +26,14 @@ public class LcPredictServiceImpl extends ServiceImpl<LcPredictMapper, LcPredict
 
     @Override
     public Result<PageVo<LcPredictDTO>> get(String contestName, Integer pageIndex, Integer pageSize) {
+        // 查询预测表
         Integer contestId = Common.parseContestName(contestName);
         Page<LcPredict> page = new Page<>(pageIndex, pageSize);
         page.setRecords(lambdaQuery()
                 .eq(LcPredict::getContestId, contestId)
                 .orderByAsc(LcPredict::getRank)
                 .list(page));
+        // 转换数据格式, 查询用户表
         List<LcPredictDTO> res = BeanUtil.copyToList(page.getRecords(), LcPredictDTO.class);
         res.forEach(predictDTO -> {
             LcUser user = lcUserService.lambdaQuery()
@@ -48,12 +50,14 @@ public class LcPredictServiceImpl extends ServiceImpl<LcPredictMapper, LcPredict
 
     @Override
     public Result<LcPredictDTO> get(String contestName, String dataRegion, String username) {
+        // 查询预测表
         Integer contestId = Common.parseContestName(contestName);
         LcPredict predict = lambdaQuery().eq(LcPredict::getContestId, contestId)
                 .eq(LcPredict::getDataRegion, dataRegion)
                 .eq(LcPredict::getUsername, username)
                 .one();
         LcPredictDTO predictDTO = BeanUtil.copyProperties(predict, LcPredictDTO.class);
+        // 如果用户在预测表中 (参赛), 则查询用户表
         if (predictDTO != null) {
             LcUser user = lcUserService.lambdaQuery()
                     .eq(LcUser::getDataRegion, predictDTO.getDataRegion())

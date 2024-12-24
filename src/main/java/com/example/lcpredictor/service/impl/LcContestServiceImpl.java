@@ -20,10 +20,12 @@ public class LcContestServiceImpl extends ServiceImpl<LcContestMapper, LcContest
 
     @Override
     public Result<PageVo<LcContestDTO>> get(Integer pageIndex, Integer pageSize) {
+        // 查询竞赛表
         Page<LcContest> page = new Page<>(pageIndex, pageSize);
         page.setRecords(lambdaQuery()
                 .orderByDesc(LcContest::getStartTime)
                 .list(page));
+        // 转换数据格式
         List<LcContestDTO> res = new ArrayList<>();
         page.getRecords().forEach(contest -> {
             LcContestDTO contestDTO = new LcContestDTO();
