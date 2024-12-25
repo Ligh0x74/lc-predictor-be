@@ -6,8 +6,7 @@ import com.example.lcpredictor.domain.LcPredict;
 import com.example.lcpredictor.service.LcPredictService;
 import com.example.lcpredictor.utils.crawler.Common;
 import com.example.lcpredictor.utils.crawler.Predictor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,10 +15,9 @@ import java.util.List;
 /**
  * 预测任务
  */
+@Slf4j
 @Component
 public class PredictTask {
-
-    private static final Logger logger = LoggerFactory.getLogger(PredictTask.class);
 
     @Autowired
     private LcPredictService lcPredictService;
@@ -36,13 +34,13 @@ public class PredictTask {
         TimeInterval timer = DateUtil.timer();
         timer.start();
         Predictor.predict(predictList);
-        logger.info("PREDICT ELAPSED Time: " + timer.interval() / 1000.0);
+        log.info("PREDICT ELAPSED Time: " + timer.interval() / 1000.0);
         timer.start();
         predictList.forEach(predict -> lcPredictService.lambdaUpdate()
                 .eq(LcPredict::getContestId, contestId)
                 .eq(LcPredict::getDataRegion, predict.getDataRegion())
                 .eq(LcPredict::getUsername, predict.getUsername())
                 .update(predict));
-        logger.info("UPDATE ELAPSED Time: " + timer.interval() / 1000.0);
+        log.info("UPDATE ELAPSED Time: " + timer.interval() / 1000.0);
     }
 }

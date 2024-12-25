@@ -11,15 +11,13 @@ import com.example.lcpredictor.mapper.LcUserMapper;
 import com.example.lcpredictor.service.LcUserService;
 import com.example.lcpredictor.utils.crawler.Requests;
 import com.example.lcpredictor.vo.Result;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class LcUserServiceImpl extends ServiceImpl<LcUserMapper, LcUser>
         implements LcUserService {
-
-    private static final Logger logger = LoggerFactory.getLogger(LcUserServiceImpl.class);
 
     @Override
     public Result<LcUserDTO> login(String dataRegion, String username) throws InterruptedException {
@@ -107,7 +105,7 @@ public class LcUserServiceImpl extends ServiceImpl<LcUserMapper, LcUser>
     public static String request(String dataRegion, String username) throws InterruptedException {
         String res = Requests.request(HttpRequest.post(getUrl(dataRegion))
                 .body(getBody(dataRegion, username)));
-        logger.info(String.format("REQUEST: DATA_REGION %s USER %s -> RESPONSE: BODY %s",
+        log.info(String.format("REQUEST: DATA_REGION %s USER %s -> RESPONSE: BODY %s",
                 dataRegion, username, res));
         return res;
     }

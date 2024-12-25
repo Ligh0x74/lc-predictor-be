@@ -3,15 +3,13 @@ package com.example.lcpredictor.utils.crawler;
 import cn.hutool.core.io.IORuntimeException;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 请求工具类
  */
+@Slf4j
 public class Requests {
-
-    private static final Logger logger = LoggerFactory.getLogger(Requests.class);
 
     /**
      * 请求失败的重试次数
@@ -45,9 +43,9 @@ public class Requests {
                 if (response.getStatus() == 200) {
                     return response.body();
                 }
-                logger.error(response.toString());
+                log.error(response.toString());
             } catch (IORuntimeException e) {
-                logger.error(e.getMessage());
+                log.error(e.getMessage());
             }
             Thread.sleep(RETRY_WAIT_MILLIS);
         }
@@ -79,7 +77,7 @@ public class Requests {
                 }\
                 """;
         String res = request(HttpRequest.post(url).body(body));
-        logger.info(String.format("REQUEST RECENT CONTEST INFO -> RESPONSE: BODY %s", res));
+        log.info(String.format("REQUEST RECENT CONTEST INFO -> RESPONSE: BODY %s", res));
         return res;
     }
 
@@ -95,7 +93,7 @@ public class Requests {
         String url = String.format("https://leetcode.cn/contest/api/ranking/%s/?pagination=%d&region=global"
                 , contestName, pageIndex);
         String res = request(HttpRequest.get(url));
-        logger.info(String.format("REQUEST: CONTEST %s PAGE %d -> RESPONSE: BODY %s",
+        log.info(String.format("REQUEST: CONTEST %s PAGE %d -> RESPONSE: BODY %s",
                 contestName, pageIndex, res));
         return res;
     }
@@ -164,7 +162,7 @@ public class Requests {
     public static String request(String dataRegion, String username) throws InterruptedException {
         String res = request(HttpRequest.post(getUrl(dataRegion))
                 .body(getBody(dataRegion, username)));
-        logger.info(String.format("REQUEST: DATA_REGION %s USER %s -> RESPONSE: BODY %s",
+        log.info(String.format("REQUEST: DATA_REGION %s USER %s -> RESPONSE: BODY %s",
                 dataRegion, username, res));
 
         return res;
