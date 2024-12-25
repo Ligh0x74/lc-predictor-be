@@ -35,7 +35,7 @@ public class CrawlerTask {
     private LcPredictService lcPredictService;
 
     @Autowired
-    PredictTask predictTask;
+    private PredictTask predictTask;
 
     /**
      * 定时任务, 抓取竞赛数据, 将数据存储到数据库中

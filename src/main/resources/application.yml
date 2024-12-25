@@ -2,13 +2,10 @@ server:
   port: 8080
 
 spring:
+  profiles:
+    active: dev
   application:
     name: lc-predictor
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/lc_predictor
-    username: root
-    password: root
 
 mybatis-plus:
   global-config:
