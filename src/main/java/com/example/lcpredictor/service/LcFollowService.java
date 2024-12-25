@@ -11,8 +11,8 @@ public interface LcFollowService extends IService<LcFollow> {
      *
      * @param dataRegion 数据区域
      * @param username   用户名
-     * @param follow     关注/取关
+     * @param isFollow   关注/取关
      * @return 返回空的对象
      */
-    Result<?> follow(String dataRegion, String username, Boolean follow);
+    Result<?> follow(String dataRegion, String username, Boolean isFollow);
 }

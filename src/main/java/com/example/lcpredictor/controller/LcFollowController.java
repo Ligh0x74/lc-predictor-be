@@ -18,7 +18,7 @@ public class LcFollowController {
     @PostMapping("/{dataRegion}/{username}/{follow}")
     public Result<?> follow(@PathVariable("dataRegion") String dataRegion,
                             @PathVariable("username") String username,
-                            @PathVariable("follow") Boolean follow) {
-        return lcFollowService.follow(dataRegion, username, follow);
+                            @PathVariable("follow") Boolean isFollow) {
+        return lcFollowService.follow(dataRegion, username, isFollow);
     }
 }
