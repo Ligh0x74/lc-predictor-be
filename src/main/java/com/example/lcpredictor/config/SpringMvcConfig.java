@@ -11,6 +11,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class SpringMvcConfig implements WebMvcConfigurer {
 
     @Autowired
+    Properties properties;
+
+    @Autowired
     LoginInterceptor loginInterceptor;
 
     /**
@@ -30,9 +33,12 @@ public class SpringMvcConfig implements WebMvcConfigurer {
 
     /**
      * 配置 CORS
+     * https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
      */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedOrigins("*");
+        registry.addMapping("/**")
+                .allowedOrigins(properties.getAllowedOrigins())
+                .allowCredentials(true);
     }
 }
