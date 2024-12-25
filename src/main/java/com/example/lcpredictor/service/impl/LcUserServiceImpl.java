@@ -11,6 +11,7 @@ import com.example.lcpredictor.mapper.LcUserMapper;
 import com.example.lcpredictor.service.LcUserService;
 import com.example.lcpredictor.utils.crawler.Requests;
 import com.example.lcpredictor.vo.Result;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class LcUserServiceImpl extends ServiceImpl<LcUserMapper, LcUser>
         implements LcUserService {
 
     @Override
-    public Result<LcUserDTO> login(String dataRegion, String username) throws InterruptedException {
+    public Result<LcUserDTO> login(String dataRegion, String username, HttpSession session) throws InterruptedException {
         // 查询用户表
         LcUser user = lambdaQuery().eq(LcUser::getDataRegion, dataRegion)
                 .eq(LcUser::getUsername, username).one();
@@ -34,6 +35,7 @@ public class LcUserServiceImpl extends ServiceImpl<LcUserMapper, LcUser>
         }
         LcUserDTO userDTO = new LcUserDTO();
         BeanUtil.copyProperties(user, userDTO);
+        session.setAttribute("userDTO", userDTO);
         return Result.success(userDTO);
     }
 

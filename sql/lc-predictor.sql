@@ -50,3 +50,19 @@ CREATE TABLE `lc_predict`
     PRIMARY KEY (`id`)
 ) ENGINE INNODB
   DEFAULT CHARSET UTF8MB4 COMMENT 'LC 预测表';
+
+-- 创建 LC 关注表
+DROP TABLE IF EXISTS `lc_follow`;
+CREATE TABLE `lc_follow`
+(
+    `id`                 BIGINT       NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `source_data_region` VARCHAR(100) NOT NULL COMMENT '数据区域: CN/US',
+    `source_username`    VARCHAR(255) NOT NULL COMMENT '用户名',
+    `target_data_region` VARCHAR(100) NOT NULL COMMENT '数据区域: CN/US',
+    `target_username`    VARCHAR(255) NOT NULL COMMENT '用户名',
+    `deleted`            TINYINT      NOT NULL DEFAULT 0 COMMENT '逻辑删除',
+    `create_time`        DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time`        DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+    PRIMARY KEY (`id`)
+) ENGINE INNODB
+  DEFAULT CHARSET UTF8MB4 COMMENT 'LC 关注表';
