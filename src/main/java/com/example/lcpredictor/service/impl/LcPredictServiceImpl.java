@@ -89,6 +89,7 @@ public class LcPredictServiceImpl extends ServiceImpl<LcPredictMapper, LcPredict
                     predictDTO.getDataRegion(), predictDTO.getUsername());
             predictDTO.setNickname(user.getNickname());
             predictDTO.setAvatar(user.getAvatar());
+            predictDTO.setIsFollow(isFollow(predictDTO.getDataRegion(), predictDTO.getUsername()));
         }
         return Result.success(predictDTO);
     }
