@@ -23,8 +23,7 @@ public class LcUserServiceImpl extends ServiceImpl<LcUserMapper, LcUser>
     @Override
     public Result<LcUserDTO> login(String dataRegion, String username, HttpSession session) throws InterruptedException {
         // 查询用户表
-        LcUser user = lambdaQuery().eq(LcUser::getDataRegion, dataRegion)
-                .eq(LcUser::getUsername, username).one();
+        LcUser user = baseMapper.selectOneByDataRegionAndUsername(dataRegion, username);
         if (user == null) {
             // 如果用户不在数据库中, 则请求用户信息, 然后将数据存储到数据库中
             user = new LcUser();

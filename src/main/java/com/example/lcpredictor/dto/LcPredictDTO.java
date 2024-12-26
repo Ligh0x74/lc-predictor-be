@@ -44,4 +44,9 @@ public class LcPredictDTO {
      * 预测评分
      */
     private Double newRating;
+
+    /**
+     * 是否关注
+     */
+    private Boolean isFollow;
 }

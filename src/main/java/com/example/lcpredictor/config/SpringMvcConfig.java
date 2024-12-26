@@ -1,5 +1,6 @@
 package com.example.lcpredictor.config;
 
+import com.example.lcpredictor.interceptor.GlobalInterceptor;
 import com.example.lcpredictor.interceptor.LoginInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -11,16 +12,20 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class SpringMvcConfig implements WebMvcConfigurer {
 
     @Autowired
-    Properties properties;
+    private Properties properties;
 
     @Autowired
-    LoginInterceptor loginInterceptor;
+    private GlobalInterceptor globalInterceptor;
+
+    @Autowired
+    private LoginInterceptor loginInterceptor;
 
     /**
      * 配置拦截器，执行顺序和添加顺序相同，或者使用 order 设置优先级
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(globalInterceptor).addPathPatterns("/**");
         registry.addInterceptor(loginInterceptor)
                 .excludePathPatterns(
                         "/swagger-ui/**",
