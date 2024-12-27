@@ -4,7 +4,9 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import cn.hutool.jwt.JWTUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.lcpredictor.config.PropertyConfig;
 import com.example.lcpredictor.domain.LcUser;
 import com.example.lcpredictor.dto.LcUserDTO;
 import com.example.lcpredictor.mapper.LcUserMapper;
@@ -13,12 +15,18 @@ import com.example.lcpredictor.utils.crawler.Requests;
 import com.example.lcpredictor.vo.Result;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.nio.charset.StandardCharsets;
 
 @Slf4j
 @Service
 public class LcUserServiceImpl extends ServiceImpl<LcUserMapper, LcUser>
         implements LcUserService {
+
+    @Autowired
+    private PropertyConfig propertyConfig;
 
     @Override
     public Result<LcUserDTO> login(String dataRegion, String username, HttpSession session) throws InterruptedException {
@@ -34,7 +42,10 @@ public class LcUserServiceImpl extends ServiceImpl<LcUserMapper, LcUser>
         }
         LcUserDTO userDTO = new LcUserDTO();
         BeanUtil.copyProperties(user, userDTO);
-        session.setAttribute("userDTO", userDTO);
+        // 生成 JWT
+        String token = JWTUtil.createToken(BeanUtil.beanToMap(userDTO),
+                propertyConfig.getJwtKey().getBytes(StandardCharsets.UTF_8));
+        userDTO.setToken(token);
         return Result.success(userDTO);
     }
 

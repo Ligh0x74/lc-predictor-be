@@ -10,7 +10,9 @@ import org.springframework.context.annotation.Configuration;
 @Data
 @Configuration
 @ConfigurationProperties("lc-predictor")
-public class Properties {
+public class PropertyConfig {
 
     private String[] allowedOrigins;
+
+    private String jwtKey;
 }

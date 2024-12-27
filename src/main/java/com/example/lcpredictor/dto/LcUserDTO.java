@@ -24,4 +24,9 @@ public class LcUserDTO {
      * 头像
      */
     private String avatar;
+
+    /**
+     * JSON Web Token
+     */
+    private String token;
 }

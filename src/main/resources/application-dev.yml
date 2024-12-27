@@ -11,3 +11,4 @@ spring:
 
 lc-predictor:
   allowed-origins: http://localhost:5173/
+  jwt-key: 1024

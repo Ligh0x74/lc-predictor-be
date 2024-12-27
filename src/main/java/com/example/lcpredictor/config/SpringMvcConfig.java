@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class SpringMvcConfig implements WebMvcConfigurer {
 
     @Autowired
-    private Properties properties;
+    private PropertyConfig propertyConfig;
 
     @Autowired
     private GlobalInterceptor globalInterceptor;
@@ -42,8 +42,6 @@ public class SpringMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins(properties.getAllowedOrigins())
-                .allowCredentials(true);
+        registry.addMapping("/**").allowedOrigins(propertyConfig.getAllowedOrigins());
     }
 }
