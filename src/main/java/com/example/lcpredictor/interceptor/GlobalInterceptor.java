@@ -21,6 +21,10 @@ public class GlobalInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        // 直接拦截 OPTIONS 方法, 因为 CORS 预检请求不会携带 Authorization, 登录拦截器会返回 401, 会导致预检失败
+        if (request.getMethod().equals("OPTIONS")) {
+            return false;
+        }
         // 获取、验证 token
         String token = request.getHeader("Authorization");
         if (StringUtils.isEmpty(token)) {
