@@ -9,7 +9,7 @@
         <result property="contestId" column="contest_id" jdbcType="INTEGER"/>
         <result property="dataRegion" column="data_region" jdbcType="VARCHAR"/>
         <result property="username" column="username" jdbcType="VARCHAR"/>
-        <result property="rank" column="rank" jdbcType="INTEGER"/>
+        <result property="ranking" column="ranking" jdbcType="INTEGER"/>
         <result property="attendedCount" column="attended_count" jdbcType="INTEGER"/>
         <result property="oldRating" column="old_rating" jdbcType="DOUBLE"/>
         <result property="newRating" column="new_rating" jdbcType="DOUBLE"/>
@@ -20,7 +20,7 @@
 
     <sql id="Base_Column_List">
         id,contest_id,data_region,
-        username,rank,attended_count,
+        username,ranking,attended_count,
         old_rating,new_rating,deleted,
         create_time,update_time
     </sql>

@@ -38,7 +38,7 @@ public class LcPredictServiceImpl extends ServiceImpl<LcPredictMapper, LcPredict
         Page<LcPredict> page = new Page<>(pageIndex, pageSize);
         page.setRecords(lambdaQuery()
                 .eq(LcPredict::getContestId, contestId)
-                .orderByAsc(LcPredict::getRank)
+                .orderByAsc(LcPredict::getRanking)
                 .list(page));
         // 转换数据格式, 查询用户表
         List<LcPredictDTO> res = BeanUtil.copyToList(page.getRecords(), LcPredictDTO.class);

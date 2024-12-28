@@ -6,6 +6,7 @@ target/
 
 ### LC PREDICTOR ###
 tmp/
+**/src/main/resources/application-prod.yml
 
 ### STS ###
 .apt_generated

@@ -15,7 +15,7 @@ public class Predictor {
             LcPredict user = predictList.get(i);
             double oldRating = user.getOldRating();
             double eRank = erk(predictList, i, oldRating);
-            double m = Math.sqrt(eRank * user.getRank());
+            double m = Math.sqrt(eRank * user.getRanking());
             double eRating = ert(predictList, m);
             double delta = f(user.getAttendedCount()) * (eRating - oldRating);
             double newRating = oldRating + delta;

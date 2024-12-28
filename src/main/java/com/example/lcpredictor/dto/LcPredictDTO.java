@@ -28,7 +28,7 @@ public class LcPredictDTO {
     /**
      * 排名
      */
-    private Integer rank;
+    private Integer ranking;
 
     /**
      * 参赛次数

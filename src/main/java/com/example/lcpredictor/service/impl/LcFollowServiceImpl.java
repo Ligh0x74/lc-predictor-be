@@ -79,7 +79,7 @@ public class LcFollowServiceImpl extends ServiceImpl<LcFollowMapper, LcFollow>
             }
         }
         // 排序, 分页
-        res.sort(Comparator.comparingInt(LcPredictDTO::getRank));
+        res.sort(Comparator.comparingInt(LcPredictDTO::getRanking));
         PageVo<LcPredictDTO> pageVo = new PageVo<>();
         pageVo.setCurrent((long) pageIndex);
         pageVo.setSize((long) pageSize);

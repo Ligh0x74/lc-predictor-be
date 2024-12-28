@@ -137,7 +137,7 @@ public class CrawlerTask {
             predict.setContestId(contestId);
             predict.setDataRegion(dataRegion);
             predict.setUsername(username);
-            predict.setRank(rank);
+            predict.setRanking(rank);
 
             // 双赛周, 周赛的数据需要基于双周赛计算
             // 如果当前是周赛 (竞赛编号为奇数), 且周赛场次是奇数 (周赛编号 = 周赛场次 * 2 + 1), 则当前是双赛周
