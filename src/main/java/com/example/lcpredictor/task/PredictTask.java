@@ -5,7 +5,7 @@ import cn.hutool.core.date.TimeInterval;
 import com.example.lcpredictor.domain.LcPredict;
 import com.example.lcpredictor.service.LcPredictService;
 import com.example.lcpredictor.utils.crawler.Common;
-import com.example.lcpredictor.utils.crawler.Predictor;
+import com.example.lcpredictor.utils.crawler.PredictorFFT;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,7 +33,7 @@ public class PredictTask {
                 .eq(LcPredict::getContestId, contestId).list();
         TimeInterval timer = DateUtil.timer();
         timer.start();
-        Predictor.predict(predictList);
+        PredictorFFT.execute(predictList);
         log.info("PREDICT ELAPSED Time: " + timer.interval() / 1000.0);
         timer.start();
         predictList.forEach(predict -> lcPredictService.lambdaUpdate()

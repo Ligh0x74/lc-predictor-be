@@ -9,17 +9,17 @@ public class Predictor {
     // 预测算法
     // https://leetcode.cn/circle/discuss/neTUV4/
     // https://leetcode.cn/circle/discuss/TbWS5j/
-    public static void predict(List<LcPredict> predictList) {
+    public static void execute(List<LcPredict> predictList) {
         int n = predictList.size();
         for (int i = 0; i < n; i++) {
-            LcPredict user = predictList.get(i);
-            double oldRating = user.getOldRating();
+            LcPredict predict = predictList.get(i);
+            double oldRating = predict.getOldRating();
             double eRank = erk(predictList, i, oldRating);
-            double m = Math.sqrt(eRank * user.getRanking());
+            double m = Math.sqrt(eRank * predict.getRanking());
             double eRating = ert(predictList, m);
-            double delta = f(user.getAttendedCount()) * (eRating - oldRating);
+            double delta = f(predict.getAttendedCount()) * (eRating - oldRating);
             double newRating = oldRating + delta;
-            user.setNewRating(newRating);
+            predict.setNewRating(newRating);
         }
     }
 
