@@ -83,6 +83,21 @@ public class Requests {
     }
 
     /**
+     * 抓取指定竞赛的信息
+     *
+     * @param contestName 竞赛名称
+     * @return 请求成功, 则为竞赛信息的 JSON 数据, 否则为 null
+     * @throws InterruptedException 见 {@link Thread#sleep(long)}
+     */
+    public static String request(String contestName) throws InterruptedException {
+        String url = String.format("https://leetcode.cn/contest/api/info/%s/", contestName);
+        String res = request(HttpRequest.get(url));
+        log.info(String.format("REQUEST: CONTEST %s INFO -> RESPONSE: BODY %s",
+                contestName, res));
+        return res;
+    }
+
+    /**
      * 抓取指定的竞赛页面数据
      *
      * @param contestName 竞赛名称
@@ -171,6 +186,7 @@ public class Requests {
 
     public static void main(String[] args) throws InterruptedException {
         request();
+        request("weekly-contest-428");
         request("weekly-contest-428", 1);
         request("CN", "yawn_sean");
     }
