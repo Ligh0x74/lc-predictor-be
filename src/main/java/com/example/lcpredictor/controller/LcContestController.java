@@ -5,7 +5,7 @@ import cn.hutool.json.JSONUtil;
 import com.example.lcpredictor.domain.LcContest;
 import com.example.lcpredictor.dto.LcContestDTO;
 import com.example.lcpredictor.service.LcContestService;
-import com.example.lcpredictor.task.CrawlerTask;
+import com.example.lcpredictor.task.ParallelCrawlerTask;
 import com.example.lcpredictor.utils.crawler.Common;
 import com.example.lcpredictor.utils.crawler.Requests;
 import com.example.lcpredictor.vo.PageVo;
@@ -24,7 +24,7 @@ public class LcContestController {
     private LcContestService lcContestService;
 
     @Autowired
-    CrawlerTask crawlerTask;
+    ParallelCrawlerTask parallelCrawlerTask;
 
     @GetMapping("/{pageIndex}/{pageSize}")
     public Result<PageVo<LcContestDTO>> get(@PathVariable("pageIndex") Integer pageIndex,
@@ -45,7 +45,7 @@ public class LcContestController {
             contest.setStartTime(LocalDateTime.ofEpochSecond(startTime, 0, ZoneOffset.ofHours(8)));
             lcContestService.save(contest);
         }
-        crawlerTask.execute(contestName);
+        parallelCrawlerTask.execute(contestName);
         return Result.success();
     }
 }

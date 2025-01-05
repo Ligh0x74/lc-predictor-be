@@ -76,7 +76,7 @@ public class CrawlerTask {
      * @param json 竞赛信息 JSON
      * @return 如果竞赛信息不存在于数据库中, 则返回竞赛名称, 否则返回 null.
      */
-    private String process(String json) {
+    public String process(String json) {
         JSONObject jsonObject = JSONUtil.parseObj(json)
                 .getByPath("data.contestHistory.contests[0]", JSONObject.class);
         String contestName = jsonObject.getStr("titleSlug");
@@ -101,7 +101,7 @@ public class CrawlerTask {
      * @return true 继续抓取竞赛页面, false 结束任务
      * @throws InterruptedException 见 {@link Thread#sleep(long)}
      */
-    private boolean process(Integer contestId, String json) throws InterruptedException {
+    public boolean process(Integer contestId, String json) throws InterruptedException {
         JSONArray totalRank = JSONUtil.parseObj(json).getJSONArray("total_rank");
         JSONArray submissions = JSONUtil.parseObj(json).getJSONArray("submissions");
         for (int i = 0; i < totalRank.size(); i++) {
@@ -175,7 +175,7 @@ public class CrawlerTask {
      *
      * @param user 用户对象
      */
-    private void updateOrInsert(LcUser user) {
+    public void updateOrInsert(LcUser user) {
         boolean ok = lcUserService.lambdaUpdate()
                 .eq(LcUser::getDataRegion, user.getDataRegion())
                 .eq(LcUser::getUsername, user.getUsername())
