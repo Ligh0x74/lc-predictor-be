@@ -1,6 +1,7 @@
 package com.example.lcpredictor.utils.crawler;
 
 import cn.hutool.core.io.IORuntimeException;
+import cn.hutool.http.Header;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +40,7 @@ public class Requests {
         Thread.sleep(Requests.WAIT_MILLIS);
         for (int cnt = 0; cnt <= RETRY; cnt++) {
             try {
-                HttpResponse response = req.execute();
+                HttpResponse response = req.header(Header.ACCEPT, "application/json").execute();
                 if (response.getStatus() == 200) {
                     return response.body();
                 }
