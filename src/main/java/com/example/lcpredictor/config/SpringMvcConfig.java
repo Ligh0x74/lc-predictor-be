@@ -32,7 +32,8 @@ public class SpringMvcConfig implements WebMvcConfigurer {
                         "/v3/api-docs/**",
                         "/contest/**",
                         "/predict/**",
-                        "/user/**"
+                        "/user/**",
+                        "/task/**"
                 );
     }
 

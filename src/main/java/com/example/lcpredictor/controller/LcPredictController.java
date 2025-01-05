@@ -2,7 +2,6 @@ package com.example.lcpredictor.controller;
 
 import com.example.lcpredictor.dto.LcPredictDTO;
 import com.example.lcpredictor.service.LcPredictService;
-import com.example.lcpredictor.task.PredictTask;
 import com.example.lcpredictor.vo.PageVo;
 import com.example.lcpredictor.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +13,6 @@ public class LcPredictController {
 
     @Autowired
     private LcPredictService lcPredictService;
-
-    @Autowired
-    private PredictTask predictTask;
 
     @GetMapping("/{contestName}/{pageIndex}/{pageSize}")
     public Result<PageVo<LcPredictDTO>> get(@PathVariable("contestName") String contestName,
@@ -30,11 +26,5 @@ public class LcPredictController {
                                     @RequestParam("dataRegion") String dataRegion,
                                     @RequestParam("username") String username) {
         return lcPredictService.get(contestName, dataRegion, username);
-    }
-
-    @PostMapping("/{contestName}")
-    public Result<?> predictTask(@PathVariable("contestName") String contestName) {
-        predictTask.execute(contestName);
-        return Result.success();
     }
 }

@@ -102,6 +102,7 @@ public class ParallelCrawlerTask {
     public boolean contestCrawler(String contestName) throws InterruptedException {
         int total = JSONUtil.parseObj(Requests.request(contestName, 1)).getInt("user_num");
         int count = (total + Common.USER_PER_PAGE - 1) / Common.USER_PER_PAGE;
+        count = search(contestName, count);
         ExecutorService executor = Executors.newFixedThreadPool(5);
         for (int i = 1; i <= count; i++) {
             int finalI = i;
@@ -114,6 +115,29 @@ public class ParallelCrawlerTask {
             });
         }
         return shutdownExecutor(executor);
+    }
+
+    /**
+     * 二分找到最后一个有效页面, 如果页面中的第一个用户有提交记录, 则该页面有效
+     *
+     * @param contestName 竞赛名称
+     * @param count       页面总数
+     * @return 最后一个有效页面的页号
+     * @throws InterruptedException 见 {@link Thread#sleep(long)}
+     */
+    private int search(String contestName, int count) throws InterruptedException {
+        int l = 1, r = count;
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+            boolean ok = !JSONUtil.parseObj(Requests.request(contestName, mid))
+                    .getJSONArray("submissions").getJSONObject(0).isEmpty();
+            if (ok) {
+                l = mid + 1;
+            } else {
+                r = mid - 1;
+            }
+        }
+        return r;
     }
 
     /**
