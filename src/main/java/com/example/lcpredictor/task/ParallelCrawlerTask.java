@@ -4,14 +4,20 @@ import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.example.lcpredictor.domain.LcContest;
 import com.example.lcpredictor.domain.LcPredict;
 import com.example.lcpredictor.domain.LcUser;
+import com.example.lcpredictor.service.LcContestService;
 import com.example.lcpredictor.service.LcPredictService;
+import com.example.lcpredictor.service.LcUserService;
 import com.example.lcpredictor.utils.crawler.Common;
 import com.example.lcpredictor.utils.crawler.Requests;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -21,7 +27,13 @@ import java.util.concurrent.TimeUnit;
  * 并行竞赛数据抓取任务
  */
 @Component
-public class ParallelCrawlerTask extends CrawlerTask {
+public class ParallelCrawlerTask {
+
+    @Autowired
+    private LcUserService lcUserService;
+
+    @Autowired
+    private LcContestService lcContestService;
 
     @Autowired
     private LcPredictService lcPredictService;
@@ -30,18 +42,54 @@ public class ParallelCrawlerTask extends CrawlerTask {
     private PredictTask predictTask;
 
     /**
+     * 定时任务, 抓取竞赛数据, 将数据存储到数据库中
+     *
+     * @throws InterruptedException 见 {@link Thread#sleep(long)}
+     */
+    @Scheduled(cron = "0 15 0,12 * * 0", zone = "Asia/Shanghai")
+    public void execute() throws InterruptedException {
+        String contestName = process(Requests.request());
+        // 如果竞赛信息不在数据库中, 则执行任务
+        if (contestName != null) {
+            execute(contestName);
+        }
+    }
+
+    /**
      * 抓取竞赛数据, 将数据存储到数据库中
      * 由于网络故障, 可能需要手动执行特定竞赛名称的任务, 所以抽出代码作为函数
      *
      * @param contestName 竞赛名称
      * @throws InterruptedException 见 {@link Thread#sleep(long)}
      */
-    @Override
     public void execute(String contestName) throws InterruptedException {
         if (!contestCrawler(contestName) || !userCrawler(contestName)) {
             return;
         }
         predictTask.execute(contestName);
+    }
+
+    /**
+     * 处理竞赛信息, 将其存储到数据库中
+     *
+     * @param json 竞赛信息 JSON
+     * @return 如果竞赛信息不存在于数据库中, 则返回竞赛名称, 否则返回 null.
+     */
+    public String process(String json) {
+        JSONObject jsonObject = JSONUtil.parseObj(json)
+                .getByPath("data.contestHistory.contests[0]", JSONObject.class);
+        String contestName = jsonObject.getStr("titleSlug");
+        Integer startTime = jsonObject.getInt("startTime");
+        LcContest contest = new LcContest();
+        contest.setContestId(Common.parseContestName(contestName));
+        contest.setStartTime(LocalDateTime.ofEpochSecond(startTime, 0, ZoneOffset.ofHours(8)));
+        boolean exists = lcContestService.exists(new LambdaQueryWrapper<LcContest>()
+                .eq(LcContest::getContestId, contest.getContestId()));
+        if (exists) {
+            return null;
+        }
+        lcContestService.save(contest);
+        return contestName;
     }
 
     /**
@@ -210,6 +258,21 @@ public class ParallelCrawlerTask extends CrawlerTask {
             predict.setOldRating(jsonObject.getDouble("rating"));
         }
         update(predict);
+    }
+
+    /**
+     * 根据 username & dataRegion 是否存在, 更新/插入数据
+     *
+     * @param user 用户对象
+     */
+    public void updateOrInsert(LcUser user) {
+        boolean ok = lcUserService.lambdaUpdate()
+                .eq(LcUser::getDataRegion, user.getDataRegion())
+                .eq(LcUser::getUsername, user.getUsername())
+                .update(user);
+        if (!ok) {
+            lcUserService.save(user);
+        }
     }
 
     /**
