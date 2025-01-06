@@ -33,6 +33,11 @@ public class LcContest implements Serializable {
     private LocalDateTime startTime;
 
     /**
+     * 预测时间
+     */
+    private LocalDateTime predictTime;
+
+    /**
      * 逻辑删除
      */
     private Integer deleted;

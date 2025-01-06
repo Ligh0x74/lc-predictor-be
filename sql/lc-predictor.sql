@@ -23,12 +23,13 @@ CREATE TABLE `lc_user`
 DROP TABLE IF EXISTS `lc_contest`;
 CREATE TABLE `lc_contest`
 (
-    `id`          BIGINT   NOT NULL AUTO_INCREMENT COMMENT 'id',
-    `contest_id`  INT      NOT NULL COMMENT '竞赛编号: 周赛场次 * 2 + 1, 双周赛场次 * 2',
-    `start_time`  DATETIME NOT NULL COMMENT '开始时间',
-    `deleted`     TINYINT  NOT NULL DEFAULT 0 COMMENT '逻辑删除',
-    `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+    `id`           BIGINT   NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `contest_id`   INT      NOT NULL COMMENT '竞赛编号: 周赛场次 * 2 + 1, 双周赛场次 * 2',
+    `start_time`   DATETIME NOT NULL COMMENT '开始时间',
+    `predict_time` DATETIME          DEFAULT NULL COMMENT '预测时间',
+    `deleted`      TINYINT  NOT NULL DEFAULT 0 COMMENT '逻辑删除',
+    `create_time`  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time`  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_contest_id` (`contest_id`)
 ) ENGINE INNODB

@@ -16,4 +16,9 @@ public class LcContestDTO {
      * 开始时间
      */
     private LocalDateTime startTime;
+
+    /**
+     * 预测时间
+     */
+    private LocalDateTime predictTime;
 }
