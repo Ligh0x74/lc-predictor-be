@@ -14,7 +14,8 @@ CREATE TABLE `lc_user`
     `deleted`     TINYINT      NOT NULL DEFAULT 0 COMMENT '逻辑删除',
     `create_time` DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time` DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uk_data_region_username` (`data_region`, `username`)
 ) ENGINE INNODB
   DEFAULT CHARSET UTF8MB4 COMMENT 'LC 用户表';
 
@@ -28,7 +29,8 @@ CREATE TABLE `lc_contest`
     `deleted`     TINYINT  NOT NULL DEFAULT 0 COMMENT '逻辑删除',
     `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uk_contest_id` (`contest_id`)
 ) ENGINE INNODB
   DEFAULT CHARSET UTF8MB4 COMMENT 'LC 竞赛表';
 
@@ -47,7 +49,8 @@ CREATE TABLE `lc_predict`
     `deleted`        TINYINT      NOT NULL DEFAULT 0 COMMENT '逻辑删除',
     `create_time`    DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time`    DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uk_contest_id_data_region_username` (`contest_id`, `data_region`, `username`)
 ) ENGINE INNODB
   DEFAULT CHARSET UTF8MB4 COMMENT 'LC 预测表';
 
@@ -63,6 +66,7 @@ CREATE TABLE `lc_follow`
     `deleted`            TINYINT      NOT NULL DEFAULT 0 COMMENT '逻辑删除',
     `create_time`        DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time`        DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    INDEX `idx_source_data_region_source_username` (`source_data_region`, `source_username`)
 ) ENGINE INNODB
   DEFAULT CHARSET UTF8MB4 COMMENT 'LC 关注表';

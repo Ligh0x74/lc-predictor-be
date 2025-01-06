@@ -15,6 +15,7 @@ import com.example.lcpredictor.utils.crawler.Requests;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -161,12 +162,16 @@ public class ParallelCrawlerTask {
 
     /**
      * 处理竞赛页面 JSON, 将数据存储到数据库中
+     * <p>
+     * 优化性能: 索引 + 多操作单事务
+     * 使用事务, 主要是为了避免多个事务的开销, 所以将多个操作放在一个事务中
      *
      * @param contestName 竞赛名称
      * @param json        竞赛页面 JSON
      * @throws InterruptedException 见 {@link Thread#sleep(long)}
      */
-    private void process(String contestName, String json) throws InterruptedException {
+    @Transactional
+    public void process(String contestName, String json) throws InterruptedException {
         int contestId = Common.parseContestName(contestName);
         JSONArray totalRank = JSONUtil.parseObj(json).getJSONArray("total_rank");
         JSONArray submissions = JSONUtil.parseObj(json).getJSONArray("submissions");

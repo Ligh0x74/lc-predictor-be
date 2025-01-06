@@ -19,7 +19,7 @@ class LcPredictorApplicationTests {
     private RedisTemplate<String, Object> redisTemplate;
 
     @Autowired
-    PredictTask predictTask;
+    private PredictTask predictTask;
 
     @Test
     void mysqlTest() {
