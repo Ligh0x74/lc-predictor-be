@@ -36,11 +36,21 @@ public class PredictTask {
         PredictorFFT.execute(predictList);
         log.info("PREDICT ELAPSED Time: " + timer.interval() / 1000.0);
         timer.start();
-        predictList.forEach(predict -> lcPredictService.lambdaUpdate()
-                .eq(LcPredict::getContestId, contestId)
-                .eq(LcPredict::getDataRegion, predict.getDataRegion())
-                .eq(LcPredict::getUsername, predict.getUsername())
-                .update(predict));
+//        predictList.forEach(predict -> lcPredictService.lambdaUpdate()
+//                .eq(LcPredict::getContestId, contestId)
+//                .eq(LcPredict::getDataRegion, predict.getDataRegion())
+//                .eq(LcPredict::getUsername, predict.getUsername())
+//                .update(predict));
+//
+//        predictList.forEach(predict -> lcPredictService.lambdaUpdate()
+//                .eq(LcPredict::getId, predict.getId())
+//                .update(predict));
+
+        // 表上无其他索引, 耗时分别为 1050s, 450s, 4s
+        // 1050s -> 450s, 主要是使用主键索引查询更快, 不需要全表扫描
+        // 450s -> 4s, 通过查看 MySQL 的 General Query Log 日志发现, mybatis-plus 的批量更新操作
+        // 将所有更新语句放在一个事务中, 而不是为每条更新语句建立一个事务, 没想到时间差距这么大
+        lcPredictService.updateBatchById(predictList);
         log.info("UPDATE ELAPSED Time: " + timer.interval() / 1000.0);
     }
 }

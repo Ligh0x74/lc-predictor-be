@@ -14,7 +14,7 @@ public class PredictorFFT {
 
     private static double[] P;
 
-    // 预测算法, 经过测试误差小于 1
+    // 预测算法, 经过测试误差小于 1, 预测时间从 5min 降低为 100ms 以内
     // https://leetcode.cn/circle/discuss/neTUV4/
     // https://leetcode.cn/circle/discuss/TbWS5j/
     // 将评分转换为 [0, N] 之间的整数, f(x) 表示评分为 x 的人数
