@@ -31,6 +31,7 @@ public class LcContestServiceImpl extends ServiceImpl<LcContestMapper, LcContest
             LcContestDTO contestDTO = new LcContestDTO();
             contestDTO.setContestName(Common.parseContestId(contest.getContestId()));
             contestDTO.setStartTime(contest.getStartTime());
+            contestDTO.setPredictTime(contest.getPredictTime());
             res.add(contestDTO);
         });
         PageVo<LcContestDTO> pageVo = PageVo.pageInfo(page);
