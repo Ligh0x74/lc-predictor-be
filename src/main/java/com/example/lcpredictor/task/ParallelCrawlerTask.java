@@ -17,8 +17,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -83,7 +82,7 @@ public class ParallelCrawlerTask {
         Integer startTime = jsonObject.getInt("startTime");
         LcContest contest = new LcContest();
         contest.setContestId(Common.parseContestName(contestName));
-        contest.setStartTime(LocalDateTime.ofEpochSecond(startTime, 0, ZoneOffset.ofHours(8)));
+        contest.setStartTime(new Date(startTime));
         boolean exists = lcContestService.exists(new LambdaQueryWrapper<LcContest>()
                 .eq(LcContest::getContestId, contest.getContestId()));
         if (exists) {

@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/task")
@@ -41,7 +40,7 @@ public class TaskController {
             Integer startTime = jsonObject.getInt("start_time");
             LcContest contest = new LcContest();
             contest.setContestId(contestId);
-            contest.setStartTime(LocalDateTime.ofEpochSecond(startTime, 0, ZoneOffset.ofHours(8)));
+            contest.setStartTime(new Date(startTime));
             lcContestService.save(contest);
         }
         parallelCrawlerTask.execute(contestName);

@@ -4,12 +4,11 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
-
-import lombok.Data;
+import java.util.Date;
 
 /**
  * LC 用户表
@@ -51,12 +50,12 @@ public class LcUser implements Serializable {
     /**
      * 创建时间
      */
-    private LocalDateTime createTime;
+    private Date createTime;
 
     /**
      * 修改时间
      */
-    private LocalDateTime updateTime;
+    private Date updateTime;
 
     @Serial
     @TableField(exist = false)

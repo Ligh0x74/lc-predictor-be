@@ -2,7 +2,7 @@ package com.example.lcpredictor.dto;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 public class LcContestDTO {
@@ -15,10 +15,10 @@ public class LcContestDTO {
     /**
      * 开始时间
      */
-    private LocalDateTime startTime;
+    private Date startTime;
 
     /**
      * 预测时间
      */
-    private LocalDateTime predictTime;
+    private Date predictTime;
 }

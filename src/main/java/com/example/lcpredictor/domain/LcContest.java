@@ -8,7 +8,7 @@ import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * LC 竞赛表
@@ -30,12 +30,12 @@ public class LcContest implements Serializable {
     /**
      * 开始时间
      */
-    private LocalDateTime startTime;
+    private Date startTime;
 
     /**
      * 预测时间
      */
-    private LocalDateTime predictTime;
+    private Date predictTime;
 
     /**
      * 逻辑删除
@@ -45,12 +45,12 @@ public class LcContest implements Serializable {
     /**
      * 创建时间
      */
-    private LocalDateTime createTime;
+    private Date createTime;
 
     /**
      * 修改时间
      */
-    private LocalDateTime updateTime;
+    private Date updateTime;
 
     @Serial
     @TableField(exist = false)

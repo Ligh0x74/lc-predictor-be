@@ -12,8 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -62,7 +61,7 @@ public class PredictTask {
 
         // 更新预测时间
         LcContest contest = new LcContest();
-        contest.setPredictTime(LocalDateTime.ofEpochSecond(System.currentTimeMillis(), 0, ZoneOffset.ofHours(8)));
+        contest.setPredictTime(new Date(System.currentTimeMillis()));
         lcContestService.lambdaUpdate().eq(LcContest::getContestId, contestId).update(contest);
     }
 }
