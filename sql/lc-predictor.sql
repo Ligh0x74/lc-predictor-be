@@ -51,7 +51,8 @@ CREATE TABLE `lc_predict`
     `create_time`    DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time`    DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
     PRIMARY KEY (`id`),
-    UNIQUE KEY `uk_contest_id_data_region_username` (`contest_id`, `data_region`, `username`)
+    UNIQUE KEY `uk_contest_id_data_region_username` (`contest_id`, `data_region`, `username`),
+    UNIQUE KEY `uk_contest_id_ranking` (`contest_id`, `ranking`)
 ) ENGINE INNODB
   DEFAULT CHARSET UTF8MB4 COMMENT 'LC 预测表';
 
