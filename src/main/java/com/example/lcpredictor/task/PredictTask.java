@@ -6,10 +6,14 @@ import com.example.lcpredictor.domain.LcContest;
 import com.example.lcpredictor.domain.LcPredict;
 import com.example.lcpredictor.service.LcContestService;
 import com.example.lcpredictor.service.LcPredictService;
+import com.example.lcpredictor.utils.RedisKey;
 import com.example.lcpredictor.utils.crawler.Common;
 import com.example.lcpredictor.utils.crawler.PredictorFFT;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.Cursor;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -27,6 +31,9 @@ public class PredictTask {
 
     @Autowired
     private LcContestService lcContestService;
+
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
     /**
      * 根据竞赛名称从数据库获取预测列表, 执行预测算法, 将结果存储到数据库中
@@ -63,5 +70,13 @@ public class PredictTask {
         LcContest contest = new LcContest();
         contest.setPredictTime(new Date(System.currentTimeMillis()));
         lcContestService.lambdaUpdate().eq(LcContest::getContestId, contestId).update(contest);
+
+        // 更新之后, 需要删除相关缓存, 刷新数据
+        // 具体来说, 就是竞赛页面的第一页, 和指定竞赛的所有预测页面
+        redisTemplate.delete(RedisKey.contestKey(1));
+        try (Cursor<String> cursor = redisTemplate.scan(ScanOptions.scanOptions()
+                .match(RedisKey.predictKey(contestName)).count(500).build())) {
+            redisTemplate.delete(cursor.stream().toList());
+        }
     }
 }

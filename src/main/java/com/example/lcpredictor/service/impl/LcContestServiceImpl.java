@@ -6,6 +6,7 @@ import com.example.lcpredictor.domain.LcContest;
 import com.example.lcpredictor.dto.LcContestDTO;
 import com.example.lcpredictor.mapper.LcContestMapper;
 import com.example.lcpredictor.service.LcContestService;
+import com.example.lcpredictor.utils.RedisKey;
 import com.example.lcpredictor.utils.crawler.Common;
 import com.example.lcpredictor.vo.PageVo;
 import com.example.lcpredictor.vo.Result;
@@ -27,7 +28,7 @@ public class LcContestServiceImpl extends ServiceImpl<LcContestMapper, LcContest
     @Override
     public Result<PageVo<LcContestDTO>> get(Integer pageIndex, Integer pageSize) {
         // 查询 redis, 缓存竞赛表
-        String key = String.format("contest:%d", pageIndex);
+        String key = RedisKey.contestKey(pageIndex);
         @SuppressWarnings("unchecked")
         PageVo<LcContestDTO> pageVo = (PageVo<LcContestDTO>) redisTemplate.opsForValue().get(key);
         if (pageVo == null) {
@@ -47,8 +48,7 @@ public class LcContestServiceImpl extends ServiceImpl<LcContestMapper, LcContest
             });
             pageVo = PageVo.pageInfo(page);
             pageVo.setRecords(res);
-            redisTemplate.opsForValue().set(String.format("contest:%d", pageIndex),
-                    pageVo, Duration.ofHours(1));
+            redisTemplate.opsForValue().set(key, pageVo, Duration.ofHours(1));
         }
         return Result.success(pageVo);
     }

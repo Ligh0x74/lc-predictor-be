@@ -12,6 +12,7 @@ import com.example.lcpredictor.mapper.LcFollowMapper;
 import com.example.lcpredictor.mapper.LcPredictMapper;
 import com.example.lcpredictor.mapper.LcUserMapper;
 import com.example.lcpredictor.service.LcPredictService;
+import com.example.lcpredictor.utils.RedisKey;
 import com.example.lcpredictor.utils.ThreadLocals;
 import com.example.lcpredictor.utils.crawler.Common;
 import com.example.lcpredictor.vo.PageVo;
@@ -39,7 +40,7 @@ public class LcPredictServiceImpl extends ServiceImpl<LcPredictMapper, LcPredict
     @Override
     public Result<PageVo<LcPredictDTO>> get(String contestName, Integer pageIndex, Integer pageSize) {
         // 查询 redis, 缓存预测表 + 用户表生成的数据, 关注信息依赖于登录用户, 所以不缓存
-        String key = String.format("predict:%s:%d", contestName, pageIndex);
+        String key = RedisKey.predictKey(contestName, pageIndex);
         @SuppressWarnings("unchecked")
         PageVo<LcPredictDTO> pageVo = (PageVo<LcPredictDTO>) redisTemplate.opsForValue().get(key);
         if (pageVo == null) {
@@ -61,8 +62,7 @@ public class LcPredictServiceImpl extends ServiceImpl<LcPredictMapper, LcPredict
             });
             pageVo = PageVo.pageInfo(page);
             pageVo.setRecords(res);
-            redisTemplate.opsForValue().set(String.format("predict:%s:%d", contestName, pageIndex),
-                    pageVo, Duration.ofHours(1));
+            redisTemplate.opsForValue().set(key, pageVo, Duration.ofHours(1));
         }
         // 如果用户已登录, 则包含关注信息
         LcUserDTO userDTO = ThreadLocals.lcUserDTOThreadLocal.get();
