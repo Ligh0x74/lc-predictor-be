@@ -82,7 +82,7 @@ public class ParallelCrawlerTask {
         Integer startTime = jsonObject.getInt("startTime");
         LcContest contest = new LcContest();
         contest.setContestId(Common.parseContestName(contestName));
-        contest.setStartTime(new Date(startTime));
+        contest.setStartTime(new Date(startTime * 1000L));
         boolean exists = lcContestService.exists(new LambdaQueryWrapper<LcContest>()
                 .eq(LcContest::getContestId, contest.getContestId()));
         if (exists) {
